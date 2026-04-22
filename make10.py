@@ -13,7 +13,8 @@ def calc(a, b, op):
         return a / b
 
 def make10(nums):
-    results = []
+    # リストではなくsetを使用して重複を排除する
+    results = set()
     
     for perm in itertools.permutations(nums):
         for op1, op2, op3 in itertools.product(ops, repeat=3):
@@ -26,9 +27,11 @@ def make10(nums):
                 if r2 is not None:
                     r3 = calc(r2, d, op3)
                     if r3 is not None and abs(r3 - 10) < 1e-6:
-                        results.append(f"(({a}{op1}{b}){op2}{c}){op3}{d}")
+                        # setに追加 (重複する文字列は自動的に無視される)
+                        results.add(f"(({a}{op1}{b}){op2}{c}){op3}{d}")
     
-    return results
+    # リストに変換してソートし、結果を返す
+    return sorted(list(results))
 
 # --- UI ---
 st.title("Make 10 🎯")
